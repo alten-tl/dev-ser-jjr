@@ -41,6 +41,7 @@ export class Client {
   @UpdateDateColumn()
   updatedAt: Date;
 
+  @ApiProperty({ description: 'Client appointments', type: () => [Appointment] })
   @OneToMany(() => Appointment, appointment => appointment.client)
   appointments: Appointment[];
 }

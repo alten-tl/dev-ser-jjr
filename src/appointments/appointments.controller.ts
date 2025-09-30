@@ -91,6 +91,6 @@ export class AppointmentsController {
   @ApiResponse({ status: 204, description: 'Appointment cancelled successfully' })
   @ApiResponse({ status: 404, description: 'Appointment not found' })
   async cancel(@Param('id') id: string): Promise<void> {
-    return await this.appointmentsService.cancel(id);
+    await this.appointmentsService.cancel(id);
   }
 }

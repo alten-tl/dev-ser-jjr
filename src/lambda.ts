@@ -7,7 +7,7 @@ import { APIGatewayProxyHandler, APIGatewayProxyEvent, APIGatewayProxyResult } f
 import { Context } from 'aws-lambda';
 import { createServer, proxy } from 'aws-serverless-express';
 import { eventContext } from 'aws-serverless-express/middleware';
-import * as express from 'express';
+import express from 'express';
 
 let cachedServer: any;
 
@@ -55,5 +55,5 @@ export const handler: APIGatewayProxyHandler = async (
   context: Context,
 ): Promise<APIGatewayProxyResult> => {
   const server = await createNestServer();
-  return proxy(server, event, context, 'PROMISE').promise;
+  return proxy(server as any, event, context, 'PROMISE').promise;
 };

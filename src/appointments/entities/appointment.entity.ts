@@ -42,7 +42,7 @@ export class Appointment {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @ApiProperty({ description: 'Related client' })
+  @ApiProperty({ description: 'Related client', type: () => Client })
   @ManyToOne(() => Client, client => client.appointments, { eager: true })
   @JoinColumn({ name: 'clientId' })
   client: Client;
@@ -51,7 +51,7 @@ export class Appointment {
   @Column({ type: 'uuid' })
   clientId: string;
 
-  @ApiProperty({ description: 'Related vehicle' })
+  @ApiProperty({ description: 'Related vehicle', type: () => Vehicle })
   @ManyToOne(() => Vehicle, vehicle => vehicle.appointments, { eager: true })
   @JoinColumn({ name: 'vehicleId' })
   vehicle: Vehicle;

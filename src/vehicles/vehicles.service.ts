@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Vehicle } from './entities/vehicle.entity';
+import { Vehicle, VehicleStatus } from './entities/vehicle.entity';
 import { CreateVehicleDto } from './dto/create-vehicle.dto';
 import { UpdateVehicleDto } from './dto/update-vehicle.dto';
 
@@ -28,14 +28,14 @@ export class VehiclesService {
 
   async findAll(): Promise<Vehicle[]> {
     return await this.vehicleRepository.find({
-      where: { status: 'ACTIVE' },
+      where: { status: VehicleStatus.ACTIVE },
       relations: ['appointments'],
     });
   }
 
   async findOne(id: string): Promise<Vehicle> {
     const vehicle = await this.vehicleRepository.findOne({
-      where: { id, status: 'ACTIVE' },
+      where: { id, status: VehicleStatus.ACTIVE },
       relations: ['appointments'],
     });
 
@@ -48,7 +48,7 @@ export class VehiclesService {
 
   async findByVin(vin: string): Promise<Vehicle> {
     const vehicle = await this.vehicleRepository.findOne({
-      where: { vin, status: 'ACTIVE' },
+      where: { vin, status: VehicleStatus.ACTIVE },
       relations: ['appointments'],
     });
 
@@ -63,7 +63,7 @@ export class VehiclesService {
     const vehicle = await this.findOne(id);
     
     // Check if VIN is being updated and if it already exists
-    if (updateVehicleDto.vin && updateVehicleDto.vin !== vehicle.vin) {
+    if ('vin' in updateVehicleDto && updateVehicleDto.vin && updateVehicleDto.vin !== vehicle.vin) {
       const existingVehicle = await this.vehicleRepository.findOne({
         where: { vin: updateVehicleDto.vin }
       });
@@ -79,7 +79,7 @@ export class VehiclesService {
 
   async remove(id: string): Promise<void> {
     const vehicle = await this.findOne(id);
-    vehicle.status = 'INACTIVE';
+    vehicle.status = VehicleStatus.INACTIVE;
     await this.vehicleRepository.save(vehicle);
   }
 }

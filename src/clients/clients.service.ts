@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Client } from './entities/client.entity';
+import { Client, ClientStatus } from './entities/client.entity';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 
@@ -19,14 +19,14 @@ export class ClientsService {
 
   async findAll(): Promise<Client[]> {
     return await this.clientRepository.find({
-      where: { status: 'ACTIVE' },
+      where: { status: ClientStatus.ACTIVE },
       relations: ['appointments'],
     });
   }
 
   async findOne(id: string): Promise<Client> {
     const client = await this.clientRepository.findOne({
-      where: { id, status: 'ACTIVE' },
+      where: { id, status: ClientStatus.ACTIVE },
       relations: ['appointments'],
     });
 
@@ -46,7 +46,7 @@ export class ClientsService {
 
   async remove(id: string): Promise<void> {
     const client = await this.findOne(id);
-    client.status = 'INACTIVE';
+    client.status = ClientStatus.INACTIVE;
     await this.clientRepository.save(client);
   }
 }

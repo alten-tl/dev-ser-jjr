@@ -32,13 +32,9 @@ export class AppointmentsService {
   }
 
   async findByDate(date: string): Promise<Appointment[]> {
-    const startDate = new Date(date);
-    const endDate = new Date(date);
-    endDate.setDate(endDate.getDate() + 1);
-
     return await this.appointmentRepository.find({
       where: {
-        date: Between(startDate, endDate),
+        date: date,
         status: AppointmentStatus.ENABLED,
       },
       relations: ['client', 'vehicle'],
@@ -118,7 +114,9 @@ export class AppointmentsService {
     const now = new Date();
     
     // Check if date is in the past
-    if (appointmentDate < now.setHours(0, 0, 0, 0)) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (appointmentDate < today) {
       throw new BadRequestException('Cannot create appointments in the past');
     }
 

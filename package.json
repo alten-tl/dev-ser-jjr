@@ -67,7 +67,7 @@
     "typescript-eslint": "^8.20.0",
     "serverless": "^3.40.0",
     "@types/aws-lambda": "^8.10.145",
-    "@types/aws-serverless-express": "^3.4.0"
+    "@types/aws-serverless-express": "^3.3.0"
   },
   "jest": {
     "moduleFileExtensions": [
